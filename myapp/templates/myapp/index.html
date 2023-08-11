@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'myapp/style.css' %}">  
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Ad Finder!</title>
+</head>
+<body>
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between">
+                <div class="flex space-x-7"></div> 
+                <div>
+                    <a href="#" class="flex items-center py-4 px-2">
+                        <span class="text-lg text-gray-700 font-semibold px-2">Ad Finder</span>
+                        <span class="bg-pink-100 text-pink-800 text-xs font-small mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-pink-400 border border-pink-400">Beta</span>
+                    </a>
+                </div>
+                <div class="md:flex items-center space-x-1">
+                    <a href="/admin/" class="flex items-center py-4 px-2" target="_blank">
+                        <span class="text-lg text-gray-700 font-semibold px-2">Login</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <form class="bg-white shadow-md mb-4 pb-8 rounded pt-6 px-8 m-20" method="POST"> 
+        {% csrf_token %}
+        <div class="mb-4">
+            <label for="url" class="block text-gray-700 text-sm font-bold mb-2">Enter blog or website URL</label>
+            <input required class="shadow border rounded appearance-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline:none focus:shadow-outline" type="text" id="url" name="url"/>
+        </div>
+        <input class="bg-blue-500 text-white hover:bg-blue-700 font-bold py-2 px-4 rounded" type="submit" value="Find Ads" />
+    </form>
+    <div class="p-10 m-10"> 
+        <h3 class="block text-gray-700 text-sm font-bold mb-2">
+            {% if commonwords %}
+                Search result showing for: <a class="text-blue-500" href="{{blogUrl}}" target="_blank">{{blogUrl}}</a> 
+                <br><br>  
+                Keywords extracted from article: 
+                {% for word in commonwords %}
+                    <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-white bg-green-600 rounded-full">{{word}}</span>
+                {% endfor %}
+            {% endif %}
+        </h3>
+        <h3 class="py-5 text-lg font-bold">
+            {% if relevantads %} 
+                Relevant Ads found in database:
+            {% elif adsfound == False %}
+                No relevant Ads found in database!  
+            {% endif %} 
+        </h3> 
+        <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5">
+            {% for ad in relevantads %}
+                <a href="{{ad.ad_url}}" target="_blank">
+                    <div class="rounded shadow-lg overflow-hidden" >
+                        <img class="w-full" src="{{ad.image}}" alt=""/>  
+                        <div class="font-bold text-xl mb-2">{{ad.name}}</div>
+                        <div class="font-bold mb-2">Product Details: <span class="text-blue-500">{{ad.ad_url}}</span></div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+        
+    </div>
+    
+    
+</body>
+</html> 
+
