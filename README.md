@@ -8,8 +8,11 @@ For a given article or blog site, this web application finds relevant ads from t
     Run "docker run -p 8555:8000 shahmostakim/adfinder:withdata"
     Open browser and visit "localhost:8555"
 
-Note:
 
+=========== Note ===================
+
+    It is strongly recommended to run the project with docker image. Github repository is best for code review only. 
+    
     you can change the host machine port number that maps to docker port number. Just replace '8555' with your desired port number in the "docker run" command.
     To create new ads and tags in database login with username: "shah", password: "dimuna2012".
 
